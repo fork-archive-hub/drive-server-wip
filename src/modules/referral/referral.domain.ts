@@ -1,6 +1,3 @@
-import { types } from '@hapi/joi';
-import { aes } from '@internxt/lib';
-
 export interface ReferralAttributes {
   id: number;
   key: string;

@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { Folder } from '../folder/folder.domain';
 import {
   Column,
   Model,
@@ -10,6 +9,7 @@ import {
   AutoIncrement,
   Unique,
 } from 'sequelize-typescript';
+import { Referral, ReferralAttributes } from './referral.domain';
 
 @Table({
   underscored: true,
@@ -51,7 +51,7 @@ export class SequelizeReferralRepository implements ReferralRepository {
     private modelReferral: typeof ReferralModel,
   ) {}
 
-  async findByKey(key: string): Promise<User | null> {
+  async findByKey(key: string): Promise<Referral | null> {
     const referral = await this.modelReferral.findOne({
       where: {
         key,
@@ -60,14 +60,13 @@ export class SequelizeReferralRepository implements ReferralRepository {
     return referral ? this.toDomain(referral) : null;
   }
 
-  toDomain(model: UserModel): User {
-    return User.build({
+  toDomain(model: ReferralModel): Referral {
+    return Referral.build({
       ...model.toJSON(),
-      rootFolder: model.rootFolder ? Folder.build(model.rootFolder) : null,
     });
   }
 
-  toModel(domain: User): Partial<UserAttributes> {
+  toModel(domain: Referral): Partial<ReferralAttributes> {
     return domain.toJSON();
   }
 }
